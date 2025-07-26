@@ -1,93 +1,117 @@
 <?php
-require '../../includes/auth.php';
-require '../../includes/header.php';
-require '../../config/database.php';
-require 'settings_functions.php';
+include '../../includes/auth.php';
+include '../../includes/header.php';
+include '../../config/database.php';
 
-$settings = get_all_settings($conn);
+$query = "SELECT * FROM settings ORDER BY name ASC";
+$result = mysqli_query($conn, $query);
 ?>
 
 <style>
     body {
-        background-color: #f8f1e4;
+        background-color: #f3efe3;
         font-family: 'Georgia', serif;
     }
 
     .vintage-header {
-        border-bottom: 2px solid #9e835c;
-        padding-bottom: 10px;
+        background-color: #d7c8b6;
+        padding: 10px 20px;
+        border-left: 10px solid #7b5e42;
+        border-radius: 8px;
+        color: #4b3621;
+        margin-bottom: 20px;
     }
 
-    .table {
-        background-color: #fffaf0;
-        border: 1px solid #d1bfa7;
+    .vintage-card {
+        background-color: #fdfaf6;
+        border: 1px solid #b6a489;
+        border-radius: 8px;
     }
 
-    .table th {
-        background-color: #e8dcc7;
-        color: #5c3b18;
-        font-weight: bold;
+    .vintage-table thead {
+        background-color: #e8dccb;
+        color: #5c4433;
+    }
+
+    .form-control {
+        font-family: 'Georgia', serif;
+        font-size: 0.95rem;
     }
 
     .btn-vintage {
-        background-color: #a67c52;
-        color: white;
+        background-color: #7b5e42;
+        color: #fff;
         border: none;
-        padding: 10px 20px;
-        font-weight: bold;
     }
 
     .btn-vintage:hover {
-        background-color: #8a6242;
+        background-color: #5c4433;
     }
 
-    .alert-success {
-        background-color: #d8e3d0;
-        color: #4b6f44;
-        border: 1px solid #b7cba3;
-    }
-
-    input.form-control {
-        border: 1px solid #c3a783;
-        background-color: #fffdf8;
+    .btn-sm {
+        font-size: 0.8rem;
+        padding: 3px 10px;
     }
 </style>
 
 <div class="container py-4">
-    <div class="vintage-header mb-3">
-        <h2 class="text-secondary"><i class="bi bi-gear-fill"></i> Pengaturan Aplikasi</h2>
+    <div class="vintage-header d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold m-0">
+            <i class="bi bi-gear-fill me-2"></i> Pengaturan Aplikasi
+        </h2>
+        <a href="create.php" class="btn btn-vintage btn-sm">
+            <i class="bi bi-plus-circle me-1"></i> Tambah
+        </a>
     </div>
 
     <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
         <div class="alert alert-success">Perubahan berhasil disimpan.</div>
+    <?php elseif (isset($_GET['status']) && $_GET['status'] === 'deleted'): ?>
+        <div class="alert alert-success">Pengaturan berhasil dihapus.</div>
+    <?php elseif (isset($_GET['status']) && $_GET['status'] === 'notfound'): ?>
+        <div class="alert alert-danger">Data tidak ditemukan.</div>
     <?php endif; ?>
 
     <form method="POST" action="save.php">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="text-center">
-                    <tr>
-                        <th style="width: 5%;">#</th>
-                        <th>Nama Pengaturan</th>
-                        <th>Nilai</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($settings as $index => $setting): ?>
-                    <tr>
-                        <td class="text-center"><?= $index + 1 ?></td>
-                        <td><?= htmlspecialchars($setting['name']) ?></td>
-                        <td>
-                            <input type="text" name="settings[<?= $setting['id'] ?>]" class="form-control"
-                                   value="<?= htmlspecialchars($setting['value']) ?>">
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="text-end mt-3">
-            <button type="submit" class="btn btn-vintage">Simpan Perubahan</button>
+        <div class="card vintage-card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle vintage-table">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="width: 30%;">Nama Pengaturan</th>
+                                <th>Nilai</th>
+                                <th style="width: 18%;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                            <tr>
+                                <td><?= htmlspecialchars($row['name']) ?></td>
+                                <td>
+                                    <input type="text" class="form-control" name="settings[<?= $row['id'] ?>]" value="<?= htmlspecialchars($row['value']) ?>">
+                                </td>
+                                <td class="text-center">
+                                    <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="delete.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Yakin ingin menghapus pengaturan ini?')">Hapus</a>
+                                </td>
+                            </tr>
+                            <?php endwhile; ?>
+                            <?php if (mysqli_num_rows($result) === 0): ?>
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">Belum ada pengaturan tersedia.</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-vintage px-4">
+                        <i class="bi bi-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </div>
         </div>
     </form>
 </div>

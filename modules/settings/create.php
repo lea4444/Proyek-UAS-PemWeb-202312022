@@ -3,28 +3,31 @@ require '../../includes/auth.php';
 require '../../includes/header.php';
 require '../../config/database.php';
 
-$id = $_GET['id'] ?? 0;
-$id = intval($id);
-
-$query = mysqli_query($conn, "SELECT * FROM settings WHERE id = $id");
-$setting = mysqli_fetch_assoc($query);
-
-if (!$setting) {
-    echo "<div class='container py-4'><div class='alert alert-danger'>Data tidak ditemukan.</div></div>";
-    require '../../includes/footer.php';
-    exit;
-}
-
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = trim($_POST['name']);
     $value = trim($_POST['value']);
-    $stmt = $conn->prepare("UPDATE settings SET value = ? WHERE id = ?");
-    $stmt->bind_param("si", $value, $id);
-    if ($stmt->execute()) {
-        header("Location: index.php?status=success");
-        exit;
+
+    if ($name === '') {
+        $error = "Nama pengaturan tidak boleh kosong.";
     } else {
-        $error = "Gagal mengubah data.";
+        $stmt = $conn->prepare("SELECT id FROM settings WHERE name = ?");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $error = "Nama pengaturan sudah ada.";
+        } else {
+            $stmt = $conn->prepare("INSERT INTO settings (name, value) VALUES (?, ?)");
+            $stmt->bind_param("ss", $name, $value);
+            if ($stmt->execute()) {
+                header("Location: index.php?status=success");
+                exit;
+            } else {
+                $error = "Gagal menyimpan pengaturan.";
+            }
+        }
     }
 }
 ?>
@@ -63,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="container py-4">
     <div class="vintage-header mb-3">
-        <h2 class="m-0"><i class="bi bi-pencil-square me-2"></i> Edit Pengaturan</h2>
+        <h2 class="m-0"><i class="bi bi-plus-square me-2"></i> Tambah Pengaturan</h2>
     </div>
 
     <?php if ($error): ?>
@@ -74,11 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <div class="mb-3">
                 <label class="form-label fw-bold">Nama Pengaturan</label>
-                <input type="text" class="form-control" value="<?= htmlspecialchars($setting['name']) ?>" disabled>
+                <input type="text" name="name" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label fw-bold">Nilai</label>
-                <input type="text" name="value" class="form-control" value="<?= htmlspecialchars($setting['value']) ?>" required>
+                <input type="text" name="value" class="form-control">
             </div>
             <div class="text-end">
                 <button type="submit" class="btn btn-vintage">

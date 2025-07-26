@@ -64,7 +64,7 @@ if ($result) {
 
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><img src="../../assets/icon-book.png" width="32"> Daftar Buku Tersedia</h2>
+        <h2>📚 Daftar Buku Tersedia</h2>
         <div>
             <a href="<?= $dashboard_link ?>" class="btn btn-secondary me-2">🏠 Dashboard</a>
             <a href="keranjang.php" class="btn btn-primary">🛒 Lihat Keranjang</a>

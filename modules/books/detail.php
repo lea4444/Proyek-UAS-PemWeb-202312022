@@ -10,6 +10,10 @@ $query = mysqli_query($conn, "SELECT books.*, categories.name AS category, suppl
                               LEFT JOIN suppliers ON books.supplier_id = suppliers.id
                               WHERE books.id = $id");
 $book = mysqli_fetch_assoc($query);
+
+// Logika folder otomatis berdasarkan category_id (2 = Nonfiksi)
+$folder = ($book['category_id'] == 2) ? 'buku_nonfiksi' : 'buku_fiksi';
+$image_path = "../../uploads/$folder/" . $book['image'];
 ?>
 
 <style>
@@ -50,29 +54,41 @@ $book = mysqli_fetch_assoc($query);
         border-radius: 1rem;
         box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
+
+    .placeholder-cover {
+        height: 300px;
+        background-color: #e0e0e0;
+        text-align: center;
+        line-height: 300px;
+        font-size: 18px;
+        color: #888;
+        border-radius: 1rem;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
 </style>
 
 <div class="container mt-5">
     <div class="card-vintage">
         <h4 class="mb-4">Detail Buku</h4>
         <div class="row">
-            <?php if ($book['image']): ?>
+            <?php if (!empty($book['image']) && file_exists($image_path)): ?>
                 <div class="col-md-4 text-center mb-4 mb-md-0">
-                    <img src="<?= htmlspecialchars($book['image']); ?>" alt="Gambar Buku" class="img-fluid img-vintage" style="max-height: 300px;">
+                    <img src="<?= $image_path ?>" alt="Gambar Buku" class="img-fluid img-vintage" style="max-height: 300px;">
                 </div>
                 <div class="col-md-8">
             <?php else: ?>
                 <div class="col-12">
+                    <div class="placeholder-cover">No Cover</div>
             <?php endif; ?>
 
-                <p><span class="label-vintage">Judul:</span> <?= htmlspecialchars($book['title']); ?></p>
-                <p><span class="label-vintage">Penulis:</span> <?= htmlspecialchars($book['author']); ?></p>
-                <p><span class="label-vintage">Harga:</span> <span class="badge badge-vintage">Rp<?= number_format($book['price'], 2); ?></span></p>
-                <p><span class="label-vintage">Stok:</span> <?= $book['stock']; ?> pcs</p>
-                <p><span class="label-vintage">Kategori:</span> <?= htmlspecialchars($book['category']); ?></p>
-                <p><span class="label-vintage">Supplier:</span> <?= htmlspecialchars($book['supplier']); ?></p>
-                <p><span class="label-vintage">Deskripsi:</span><br><?= nl2br(htmlspecialchars($book['description'])); ?></p>
-            </div>
+            <p><span class="label-vintage">Judul:</span> <?= htmlspecialchars($book['title']); ?></p>
+            <p><span class="label-vintage">Penulis:</span> <?= htmlspecialchars($book['author']); ?></p>
+            <p><span class="label-vintage">Harga:</span> <span class="badge badge-vintage">Rp<?= number_format($book['price'], 2); ?></span></p>
+            <p><span class="label-vintage">Stok:</span> <?= $book['stock']; ?> pcs</p>
+            <p><span class="label-vintage">Kategori:</span> <?= htmlspecialchars($book['category']); ?></p>
+            <p><span class="label-vintage">Supplier:</span> <?= htmlspecialchars($book['supplier']); ?></p>
+            <p><span class="label-vintage">Deskripsi:</span><br><?= nl2br(htmlspecialchars($book['description'])); ?></p>
+        </div>
         </div>
 
         <div class="mt-4 text-end">

@@ -1,39 +1,96 @@
+
 # 📚 Literaid - Aplikasi Web Toko Buku
 
-Literaid adalah aplikasi web toko buku berbasis PHP dan MySQL yang dirancang untuk mempermudah proses pengelolaan data buku, transaksi penjualan, pelanggan, serta pelaporan. Aplikasi ini mendukung peran admin dan pengguna biasa, dengan antarmuka modern menggunakan Bootstrap.
+Literaid adalah aplikasi web toko buku berbasis PHP dan MySQL yang dirancang untuk memudahkan pengelolaan data buku, transaksi penjualan, pelanggan, serta pelaporan. Aplikasi ini mendukung peran admin dan pengguna biasa, dengan antarmuka responsif menggunakan Bootstrap.
 
 ---
 
-## 🔍 Fitur Utama
+## 1️⃣ Cara Instalasi Aplikasi
 
-### 🔐 Autentikasi
-- Login & Logout menggunakan session
-- Role-based access control: `admin` dan `user`
+### 🔧 Persyaratan Sistem
+- Web Server: Apache (disarankan XAMPP)
+- PHP: Versi 7.4 atau lebih tinggi
+- MySQL: Versi 5.7 atau lebih tinggi
+- Browser modern (Chrome, Firefox, dll.)
 
-### 🧑‍💼 Fitur Admin
-- Dashboard statistik penjualan & data pengguna
-- CRUD Data:
-  - Buku (`modules/books`)
-  - Kategori (`modules/categories`)
-  - Pelanggan (`modules/customers`)
-  - User (`modules/users`)
-  - Supplier (`modules/suppliers`)
-  - Log Aktivitas (`modules/activity_logs`)
-- Monitoring Pesanan & Pengembalian
-- Laporan Transaksi & Export Struk
+### 📦 Langkah-langkah Instalasi
+1. **Clone atau Unduh Proyek**
+   ```bash
+   git clone https://github.com/lea4444/Proyek-UAS-PemWeb-202312022.git
+   cd literaid
+   ```
 
-### 👤 Fitur Pengguna
-- Belanja Buku & Tambah ke Keranjang (`user/shop.php`)
-- Lihat Riwayat Pesanan (`user/orders.php`)
-- Ajukan Pengembalian Buku (`user/returns.php`)
-- Kelola Profil dan Foto (`user/profile.php`)
+2. **Pindahkan Folder ke `htdocs` (jika pakai XAMPP)**
+   Letakkan folder `literaid/` ke dalam `C:/xampp/htdocs/`.
+
+3. **Import Database**
+   - Buka `phpMyAdmin`
+   - Buat database baru bernama `literaid`
+   - Import file `sql/literaid.sql`
+
+4. **Jalankan Aplikasi**
+   Buka browser dan akses:
+   ```
+   http://localhost/literaid/
+   ```
+
+---
+
+## 2️⃣ Struktur Database & ERD
+
+### 📂 Tabel Utama
+- `users` – Menyimpan data admin dan pengguna biasa
+- `books` – Daftar buku toko
+- `categories` – Kategori buku
+- `customers` – Data pelanggan
+- `orders` – Data transaksi
+- `order_items` – Detail buku per pesanan
+- `returns` – Pengajuan pengembalian buku
+- `suppliers` – Data pemasok buku
+- `settings` – Pengaturan aplikasi
+- `activity_logs` – Log aktivitas admin
+
+### 🔗 Relasi Antar Tabel
+- `orders.customer_id` → `customers.id`
+- `orders.user_id` → `users.id`
+- `order_items.order_id` → `orders.id`
+- `order_items.book_id` → `books.id`
+- `books.category_id` → `categories.id`
+- `books.supplier_id` → `suppliers.id`
+- `returns.order_id` → `orders.id`
+
+### 📊 ERD (Entity Relationship Diagram)
+
+![ERD](./docs/ERD.png)
+
+---
+
+## 3️⃣ Cara Menggunakan Aplikasi
+
+### 🔑 Login
+- Masuk melalui halaman login (`auth/login.php`)
+- Role `admin` dan `user` akan diarahkan ke dashboard masing-masing
+
+### 👩‍💼 Fitur untuk Admin
+- Dashboard statistik
+- Manajemen Data (CRUD):
+  - Buku
+  - Kategori
+  - User
+  - Supplier
+  - Pelanggan
+- Monitoring:
+  - Transaksi & Riwayat Pesanan
+  - Pengajuan Pengembalian
+- Log Aktivitas
+- Laporan Transaksi & Cetak Struk
+
+### 👩‍🎓 Fitur untuk User
+- Belanja Buku (lihat & tambahkan ke keranjang)
+- Riwayat Pesanan
+- Ajukan Pengembalian Buku
+- Kelola Profil dan Foto
 - Ubah Password
-
-### 🌐 Lainnya
-- Upload gambar buku, profil
-- Desain responsif menggunakan Bootstrap
-- Struktur database relasional terstruktur
-- Navigasi menu interaktif & estetika klasik (dashboard user)
 
 ---
 
@@ -41,65 +98,23 @@ Literaid adalah aplikasi web toko buku berbasis PHP dan MySQL yang dirancang unt
 
 ```
 literaid/
-├── admin/               → (Opsional) Admin interface tambahan
-├── assets/              → Gambar, CSS, JS, ikon
-├── auth/                → Login, logout, dan proteksi session
-├── config/              → Koneksi database (`database.php`)
-├── docs/                → Dokumentasi dan gambar ERD
-│   ├── ERD.png
-│   ├── INSTALLATION.md
-│   └── UGASE.md
-├── includes/            → File umum seperti header, navbar, footer
-├── modules/             → Modul CRUD (users, books, orders, dll)
+├── admin/               → (Opsional) Halaman admin
+├── assets/              → CSS, JS, gambar
+├── auth/                → Login, logout, proteksi
+├── config/              → Konfigurasi database
+├── docs/                → Dokumentasi & ERD
+├── includes/            → Header, footer, dll
+├── modules/             → Modul CRUD (books, users, etc.)
 ├── sql/                 → Struktur database SQL
-│   └── literaid.sql
-├── uploads/             → Upload gambar buku dan user
-├── user/                → Dashboard dan fitur pengguna biasa
-│   ├── shop.php
-│   ├── orders.php
-│   ├── returns.php
-│   └── profile.php
+├── uploads/             → Gambar buku dan profil
+├── user/                → Fitur dashboard user biasa
 ├── index.php            → Landing page
-├── hash.php             → Tools hashing password
-├── test_hash.php        → Uji hash password
-└── README.md
+└── README.md            → Dokumentasi proyek
 ```
 
 ---
 
-## 💻 Teknologi
-
-- **PHP** 7.4+
-- **MySQL** 5.7+
-- **Bootstrap** 4/5
-- **HTML5**, **CSS3**
-- **JavaScript** (vanilla)
-
----
-
-## ⚙️ Cara Instalasi
-
-1. **Clone Repository**
-```bash
-git clone https://github.com/lea4444/Proyek-UAS-PemWeb-202312022.git
-cd literaid
-```
-
-2. **Import Database**
-- Buka phpMyAdmin
-- Buat database baru `literaid`
-- Import file `sql/literaid.sql`
-
-3. **Jalankan Aplikasi**
-- Pindahkan folder `literaid/` ke dalam folder `htdocs/` (XAMPP)
-- Buka di browser:
-```
-http://localhost/literaid/index.php
-```
-
----
-
-## 👥 Akun Default (Opsional)
+## 👥 Akun Default
 
 | Role  | Email              | Password   |
 |-------|--------------------|------------|
@@ -108,32 +123,50 @@ http://localhost/literaid/index.php
 
 ---
 
-## 🗺️ Entity Relationship Diagram (ERD)
+## 💻 Teknologi
 
-![ERD](./docs/ERD.png)
+- PHP 7.4+
+- MySQL 5.7+
+- Bootstrap 4/5
+- HTML5, CSS3, JavaScript (vanilla)
+
+---
+
+## 🧪 Demo Aplikasi
+
+🎬 **Tonton Demo Video**
+> [Klik di sini untuk menonton](https://example.com/demo-video)
+
+🌐 **Coba Aplikasi**
+> [Klik di sini untuk akses demo online](https://example.com/demo-site)
 
 ---
 
 ## 📌 Contoh Commit Message
 
-```
-[Fitur] Tambah keranjang belanja dan checkout
-[Fix] Perbaikan validasi login
-[Update] Dashboard admin kategori dan laporan
-[Docs] Tambah README dan ERD
+```bash
+[Fitur] Tambah checkout dan keranjang
+[Fix] Perbaiki validasi login user
+[Update] Tampilan laporan admin
+[Docs] Tambah README dan struktur SQL
 ```
 
 ---
 
 ## 🧾 Lisensi
 
-Aplikasi ini dibuat untuk keperluan pembelajaran akademik.
+Proyek ini dibuat sebagai bagian dari tugas Ujian Akhir Semester dan pembelajaran pribadi.
+
+- 🚫 Tidak diperbolehkan dikomersialkan tanpa izin tertulis.
+- ✅ Diperbolehkan digunakan untuk tujuan edukatif, tugas kuliah, atau referensi, dengan mencantumkan sumber.
+- 🛠 Aplikasi ini disediakan "apa adanya" tanpa jaminan atau dukungan resmi.
 
 ---
 
 ## 📬 Kontak
 
-- **Nama:** Vilea Fernanda
-- **NIM:** 202312022
-- **Program Studi:** Teknik Informatika
-- **Repo GitHub:** https://github.com/lea4444/Proyek-UAS-PemWeb-202312022.git
+- **Nama:** Vilea Fernanda  
+- **NIM:** 202312022  
+- **Program Studi:** Teknik Informatika  
+- **Email:** vileafrnd@gmail.com  
+- **GitHub Repo:** [https://github.com/lea4444/Proyek-UAS-PemWeb-202312022]
