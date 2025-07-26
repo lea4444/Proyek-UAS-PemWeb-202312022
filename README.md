@@ -109,5 +109,5 @@ Proyek ini dibuat sebagai bagian dari tugas Ujian Akhir Semester dan pembelajara
 
 ---
 
-📌 Untuk informasi setup lokal, lihat file [docs/INSTALLATION.md](INSTALLATION.md)  
-📌 Untuk Panduan penggunaan aplikasi web toko buku Literaid, buka [docs/USAGE.md](USAGE.md)
+📌 Untuk informasi setup lokal, lihat file [docs/INSTALLATION.md](docs/INSTALLATION.md)  
+📌 Untuk ringkasan umum, buka file [docs/USAGE.md](docs/USAGE.md)
