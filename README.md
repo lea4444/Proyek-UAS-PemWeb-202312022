@@ -5,38 +5,17 @@ Literaid adalah aplikasi web toko buku berbasis PHP dan MySQL yang dirancang unt
 
 ---
 
-## 1️⃣ Cara Instalasi Aplikasi
+## 🧪 Demo Aplikasi
 
-### 🔧 Persyaratan Sistem
-- Web Server: Apache (disarankan XAMPP)
-- PHP: Versi 7.4 atau lebih tinggi
-- MySQL: Versi 5.7 atau lebih tinggi
-- Browser modern (Chrome, Firefox, dll.)
+🎬 **Tonton Demo Video**
+> [Klik di sini untuk menonton](https://example.com/demo-video)
 
-### 📦 Langkah-langkah Instalasi
-1. **Clone atau Unduh Proyek**
-   ```bash
-   git clone https://github.com/lea4444/Proyek-UAS-PemWeb-202312022.git
-   cd literaid
-   ```
-
-2. **Pindahkan Folder ke `htdocs` (jika pakai XAMPP)**
-   Letakkan folder `literaid/` ke dalam `C:/xampp/htdocs/`.
-
-3. **Import Database**
-   - Buka `phpMyAdmin`
-   - Buat database baru bernama `literaid`
-   - Import file `sql/literaid.sql`
-
-4. **Jalankan Aplikasi**
-   Buka browser dan akses:
-   ```
-   http://localhost/literaid/
-   ```
+🌐 **Coba Aplikasi**
+> [Klik di sini untuk akses demo online](https://example.com/demo-site)
 
 ---
 
-## 2️⃣ Struktur Database & ERD
+##  Struktur Database 
 
 ### 📂 Tabel Utama
 - `users` – Menyimpan data admin dan pengguna biasa
@@ -58,39 +37,6 @@ Literaid adalah aplikasi web toko buku berbasis PHP dan MySQL yang dirancang unt
 - `books.category_id` → `categories.id`
 - `books.supplier_id` → `suppliers.id`
 - `returns.order_id` → `orders.id`
-
-### 📊 ERD (Entity Relationship Diagram)
-
-![ERD](./docs/ERD.png)
-
----
-
-## 3️⃣ Cara Menggunakan Aplikasi
-
-### 🔑 Login
-- Masuk melalui halaman login (`auth/login.php`)
-- Role `admin` dan `user` akan diarahkan ke dashboard masing-masing
-
-### 👩‍💼 Fitur untuk Admin
-- Dashboard statistik
-- Manajemen Data (CRUD):
-  - Buku
-  - Kategori
-  - User
-  - Supplier
-  - Pelanggan
-- Monitoring:
-  - Transaksi & Riwayat Pesanan
-  - Pengajuan Pengembalian
-- Log Aktivitas
-- Laporan Transaksi & Cetak Struk
-
-### 👩‍🎓 Fitur untuk User
-- Belanja Buku (lihat & tambahkan ke keranjang)
-- Riwayat Pesanan
-- Ajukan Pengembalian Buku
-- Kelola Profil dan Foto
-- Ubah Password
 
 ---
 
@@ -132,16 +78,6 @@ literaid/
 
 ---
 
-## 🧪 Demo Aplikasi
-
-🎬 **Tonton Demo Video**
-> [Klik di sini untuk menonton](https://example.com/demo-video)
-
-🌐 **Coba Aplikasi**
-> [Klik di sini untuk akses demo online](https://example.com/demo-site)
-
----
-
 ## 📌 Contoh Commit Message
 
 ```bash
@@ -170,3 +106,8 @@ Proyek ini dibuat sebagai bagian dari tugas Ujian Akhir Semester dan pembelajara
 - **Program Studi:** Teknik Informatika  
 - **Email:** vileafrnd@gmail.com  
 - **GitHub Repo:** [https://github.com/lea4444/Proyek-UAS-PemWeb-202312022]
+
+---
+
+📌 Untuk informasi setup lokal, lihat file [docs/INSTALLATION.md](INSTALLATION.md)  
+📌 Untuk Panduan penggunaan aplikasi web toko buku Literaid, buka [docs/USAGE.md](USAGE.md)
