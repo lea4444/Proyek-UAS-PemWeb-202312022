@@ -11,7 +11,7 @@ Literaid adalah aplikasi web toko buku berbasis PHP dan MySQL yang dirancang unt
 > [Klik di sini untuk menonton](https://youtu.be/wCyTp-fcXok?si=5l9ueLwSN5mRiebD)
 
 🌐 **Coba Aplikasi**
-> [Klik di sini untuk akses demo online](literaid.my.id)
+> [Klik di sini untuk akses demo online](https://literaid.my.id/auth/login.php)
 
 ---
 
